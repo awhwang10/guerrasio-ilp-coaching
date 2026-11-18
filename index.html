@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guerrasio Learner Remediation &amp; Coaching Tool</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2b6cb0;
+      --accent: #2c7a7b;
+      --accent-hover: #234e52;
+      --bg: #f7fafc;
+      --card-bg: #ffffff;
+      --text: #2d3748;
+      --text-muted: #4a5568;
+      --border: #e2e8f0;
+      --btn-reset: #718096;
+      --btn-reset-hover: #4a5568;
+      --warning-bg: #fffaf0;
+      --warning-border: #dd6b20;
+      --warning-text: #9c4221;
+
+      /* Priority Tag Palette */
+      --habits-bg: #edf2f7;
+      --habits-text: #2d3748;
+      --habits-border: #cbd5e0;
+
+      --knowledge-bg: #faf5ff;
+      --knowledge-text: #553c9a;
+      --knowledge-border: #d6bcfa;
+
+      --mindset-bg: #fffaf0;
+      --mindset-text: #9c4221;
+      --mindset-border: #fbd38d;
+
+      --mechanics-bg: #fff5f5;
+      --mechanics-text: #9b2c2c;
+      --mechanics-border: #feb2b2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header & Instructions */
+    header {
+      background-color: var(--primary);
+      color: #ffffff;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .header-subtitle {
+      font-size: 0.9rem;
+      color: #cbd5e0;
+      margin-top: 0.25rem;
+    }
+
+    .header-subtitle a {
+      color: #90cdf4;
+      text-decoration: underline;
+    }
+
+    .header-subtitle a:hover {
+      color: #ffffff;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 0.925rem;
+      font-weight: 600;
+      padding: 0.6rem 1.15rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-copy {
+      background-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-copy:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-reset {
+      background-color: var(--btn-reset);
+      color: #ffffff;
+    }
+
+    .btn-reset:hover {
+      background-color: var(--btn-reset-hover);
+    }
+
+    .instructions-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #63b3ed;
+      padding: 0.85rem 1.15rem;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.95rem;
+      color: #f7fafc;
+    }
+
+    /* Main 2-Column Workspace */
+    main {
+      max-width: 1400px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 1.75rem;
+      flex: 1;
+      align-items: start;
+    }
+
+    .panel {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      padding: 1.5rem;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .panel-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .selection-badge {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      background: #ebf8ff;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    /* Left Panel: Checklist Sections */
+    .checklist-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .checklist-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--primary-light);
+      margin-bottom: 0.65rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+      user-select: none;
+    }
+
+    .checkbox-item:hover {
+      background-color: #edf2f7;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      margin-top: 0.22rem;
+      width: 1.05rem;
+      height: 1.05rem;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-item span {
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    .checkbox-item.checked {
+      background-color: #e6fffa;
+      font-weight: 500;
+    }
+
+    /* Right Panel: Dynamic Strategy Output */
+    .empty-state {
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      color: var(--text-muted);
+      font-style: italic;
+      background-color: var(--bg);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+    }
+
+    .warning-banner {
+      display: none;
+      background-color: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      border-left: 5px solid var(--warning-border);
+      color: var(--warning-text);
+      padding: 0.9rem 1.1rem;
+      border-radius: 6px;
+      margin-bottom: 1.25rem;
+      font-size: 0.94rem;
+    }
+
+    .strategy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .strategy-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary-light);
+      border-radius: 6px;
+      padding: 1.15rem 1.25rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .priority-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .priority-habits {
+      background-color: var(--habits-bg);
+      color: var(--habits-text);
+      border: 1px solid var(--habits-border);
+    }
+
+    .priority-knowledge {
+      background-color: var(--knowledge-bg);
+      color: var(--knowledge-text);
+      border: 1px solid var(--knowledge-border);
+    }
+
+    .priority-mindset {
+      background-color: var(--mindset-bg);
+      color: var(--mindset-text);
+      border: 1px solid var(--mindset-border);
+    }
+
+    .priority-mechanics {
+      background-color: var(--mechanics-bg);
+      color: var(--mechanics-text);
+      border: 1px solid var(--mechanics-border);
+    }
+
+    .card-field {
+      font-size: 0.93rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-field strong {
+      color: var(--primary);
+    }
+
+    .smart-goal-wrapper {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .smart-goal-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .smart-textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.93rem;
+      color: var(--text);
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e0;
+      border-radius: 5px;
+      padding: 0.6rem 0.75rem;
+      resize: vertical;
+      min-height: 62px;
+      line-height: 1.45;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .smart-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.15);
+    }
+
+    /* Accountability Framework Card */
+    .accountability-card {
+      display: none;
+      margin-top: 1.5rem;
+      background-color: #ebf8ff;
+      border: 1px solid #bee3f8;
+      border-left: 5px solid var(--primary-light);
+      border-radius: 6px;
+      padding: 1.15rem 1.25rem;
+    }
+
+    .accountability-card h3 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 0.65rem;
+    }
+
+    .accountability-card ul {
+      padding-left: 1.25rem;
+      font-size: 0.92rem;
+    }
+
+    .accountability-card li {
+      margin-bottom: 0.45rem;
+    }
+
+    .accountability-card li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* References Section */
+    .references-section {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0.5rem auto 1.5rem;
+      padding: 0 2rem;
+    }
+
+    .references-details {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .references-details summary {
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.98rem;
+      user-select: none;
+    }
+
+    .references-details summary:hover {
+      color: var(--primary-light);
+    }
+
+    .references-content {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .primary-citation {
+      background-color: var(--bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.75rem 1rem;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .references-list {
+      padding-left: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      gap: 0.5rem 2rem;
+    }
+
+    .references-list li {
+      line-height: 1.45;
+    }
+
+    .references-content a {
+      color: var(--primary-light);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .references-content a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.25rem 1rem;
+      border-top: 1px solid var(--border);
+      background-color: var(--card-bg);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+
+    /* Responsive Layout */
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+      }
+      header {
+        padding: 1.25rem 1rem;
+      }
+      .references-section {
+        padding: 0 1rem;
+      }
+      .references-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Print Optimization */
+    @media print {
+      header .header-actions,
+      .left-panel,
+      .references-section,
+      footer {
+        display: none !important;
+      }
+      header {
+        background-color: transparent;
+        color: #000000;
+        padding: 0 0 1rem 0;
+        box-shadow: none;
+        border-bottom: 2px solid #000000;
+      }
+      .instructions-box {
+        border: 1px solid #cccccc;
+        color: #000000;
+      }
+      main {
+        display: block;
+        margin: 1rem 0;
+        padding: 0;
+      }
+      .panel {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .strategy-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header & Instructions -->
+  <header>
+    <div class="header-container">
+      <div class="header-top">
+        <div>
+          <h1>Guerrasio Learner Remediation &amp; Coaching Tool</h1>
+          <p class="header-subtitle">
+            Based on the framework by <a href="https://doi.org/10.15766/mep_2374-8265.10593" target="_blank" rel="noopener noreferrer">Guerrasio et al., <em>MedEdPORTAL</em> 2017</a> (<a href="https://pubmed.ncbi.nlm.nih.gov/30800795/" target="_blank" rel="noopener noreferrer">PMID: 30800795</a>)
+          </p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn-copy" id="copyBtn" onclick="copyBrief()">
+            Copy Strategy Brief
+          </button>
+          <button type="button" class="btn-reset" id="resetBtn" onclick="resetForm()">
+            Reset Form
+          </button>
+        </div>
+      </div>
+      <div class="instructions-box">
+        <strong>Instructions:</strong> Review the ILP self-assessment with the resident. Jointly identify root causes and select them in the tool below. Co-create an action strategy for the top 2–3 items and document them in the Semi-Annual Review form.
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main>
+    <!-- Left Panel: ILP Intake Checklist -->
+    <section class="panel left-panel" aria-label="ILP Intake Checklist">
+      <div class="panel-header">
+        <h2 class="panel-title">ILP Intake Checklist</h2>
+        <span class="selection-badge" id="selectionCountBadge">0 Selected</span>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="checklist-section">
+        <h3 class="section-title">Section 1: Approach to Studying</h3>
+        <div class="checkbox-list">
+          <label class="checkbox-item" for="chk1">
+            <input type="checkbox" id="chk1" value="chk1" onchange="handleCheckChange(this)" />
+            <span>1. Trouble making a study schedule</span>
+          </label>
+          <label class="checkbox-item" for="chk2">
+            <input type="checkbox" id="chk2" value="chk2" onchange="handleCheckChange(this)" />
+            <span>2. Trouble following a study schedule</span>
+          </label>
+          <label class="checkbox-item" for="chk3">
+            <input type="checkbox" id="chk3" value="chk3" onchange="handleCheckChange(this)" />
+            <span>3. Unsure how many resources to use while studying</span>
+          </label>
+          <label class="checkbox-item" for="chk4">
+            <input type="checkbox" id="chk4" value="chk4" onchange="handleCheckChange(this)" />
+            <span>4. Don't know how many practice questions to do before exam</span>
+          </label>
+          <label class="checkbox-item" for="chk5">
+            <input type="checkbox" id="chk5" value="chk5" onchange="handleCheckChange(this)" />
+            <span>5. Other than reading explanations, don't know what to do when missing questions</span>
+          </label>
+          <label class="checkbox-item" for="chk6">
+            <input type="checkbox" id="chk6" value="chk6" onchange="handleCheckChange(this)" />
+            <span>6. Thinks taking a review course would improve performance</span>
+          </label>
+          <label class="checkbox-item" for="chk7">
+            <input type="checkbox" id="chk7" value="chk7" onchange="handleCheckChange(this)" />
+            <span>7. Can't decide where or under what conditions to study</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="checklist-section">
+        <h3 class="section-title">Section 2: Barriers to Exam Preparation</h3>
+        <div class="checkbox-list">
+          <label class="checkbox-item" for="chk8">
+            <input type="checkbox" id="chk8" value="chk8" onchange="handleCheckChange(this)" />
+            <span>8. Too tired to study (fatigue / shift overload)</span>
+          </label>
+          <label class="checkbox-item" for="chk9">
+            <input type="checkbox" id="chk9" value="chk9" onchange="handleCheckChange(this)" />
+            <span>9. Too busy to spend hours studying</span>
+          </label>
+          <label class="checkbox-item" for="chk10">
+            <input type="checkbox" id="chk10" value="chk10" onchange="handleCheckChange(this)" />
+            <span>10. Easily distracted during study blocks</span>
+          </label>
+          <label class="checkbox-item" for="chk11">
+            <input type="checkbox" id="chk11" value="chk11" onchange="handleCheckChange(this)" />
+            <span>11. Distracted by need to pass a previously failed exam</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="checklist-section">
+        <h3 class="section-title">Section 3: Learning Style &amp; Information Retention</h3>
+        <div class="checkbox-list">
+          <label class="checkbox-item" for="chk12">
+            <input type="checkbox" id="chk12" value="chk12" onchange="handleCheckChange(this)" />
+            <span>12. Don't remember what is studied (rapid decay)</span>
+          </label>
+          <label class="checkbox-item" for="chk13">
+            <input type="checkbox" id="chk13" value="chk13" onchange="handleCheckChange(this)" />
+            <span>13. Feels there is too much material to learn (overwhelmed)</span>
+          </label>
+          <label class="checkbox-item" for="chk14">
+            <input type="checkbox" id="chk14" value="chk14" onchange="handleCheckChange(this)" />
+            <span>14. Prefers to learn by listening (auditory learner)</span>
+          </label>
+          <label class="checkbox-item" for="chk15">
+            <input type="checkbox" id="chk15" value="chk15" onchange="handleCheckChange(this)" />
+            <span>15. Prefers to learn by doing tasks rather than reading (kinesthetic/experiential)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="checklist-section">
+        <h3 class="section-title">Section 4: Test-Taking Scenarios</h3>
+        <div class="checkbox-list">
+          <label class="checkbox-item" for="chk16">
+            <input type="checkbox" id="chk16" value="chk16" onchange="handleCheckChange(this)" />
+            <span>16. Narrows to 2 choices, then frequently picks the wrong answer</span>
+          </label>
+          <label class="checkbox-item" for="chk17">
+            <input type="checkbox" id="chk17" value="chk17" onchange="handleCheckChange(this)" />
+            <span>17. Feels performance would improve with more testing time (pacing issue)</span>
+          </label>
+          <label class="checkbox-item" for="chk18">
+            <input type="checkbox" id="chk18" value="chk18" onchange="handleCheckChange(this)" />
+            <span>18. Scores well on certain blocks but fades on others (stamina fatigue)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="checklist-section">
+        <h3 class="section-title">Section 5: Past Testing Experiences &amp; Mindset</h3>
+        <div class="checkbox-list">
+          <label class="checkbox-item" for="chk19">
+            <input type="checkbox" id="chk19" value="chk19" onchange="handleCheckChange(this)" />
+            <span>19. Very anxious about taking the exam again</span>
+          </label>
+          <label class="checkbox-item" for="chk20">
+            <input type="checkbox" id="chk20" value="chk20" onchange="handleCheckChange(this)" />
+            <span>20. Has always felt like a "bad test taker"</span>
+          </label>
+          <label class="checkbox-item" for="chk21">
+            <input type="checkbox" id="chk21" value="chk21" onchange="handleCheckChange(this)" />
+            <span>21. Performed well on med school exams, but poorly on standardized tests</span>
+          </label>
+          <label class="checkbox-item" for="chk22">
+            <input type="checkbox" id="chk22" value="chk22" onchange="handleCheckChange(this)" />
+            <span>22. Scored fine on exams until a specific event occurred</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="checklist-section">
+        <h3 class="section-title">Section 6: Score Report Data / Histogram</h3>
+        <div class="checkbox-list">
+          <label class="checkbox-item" for="chk23">
+            <input type="checkbox" id="chk23" value="chk23" onchange="handleCheckChange(this)" />
+            <span>23. Grading histogram shows poor scores across ALL topics</span>
+          </label>
+          <label class="checkbox-item" for="chk24">
+            <input type="checkbox" id="chk24" value="chk24" onchange="handleCheckChange(this)" />
+            <span>24. Grading histogram shows high variance (well in some, poor in others)</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panel: Dynamic Strategy Output Engine -->
+    <section class="panel right-panel" aria-label="Dynamic Strategy Output and Coaching Brief">
+      <div class="panel-header">
+        <h2 class="panel-title">Coaching Strategy &amp; SMART Action Plan</h2>
+      </div>
+
+      <!-- Focus Suggestion Warning Banner (> 3 items) -->
+      <div id="warningBanner" class="warning-banner" role="status" aria-live="polite"></div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="empty-state">
+        Select one or more struggles on the left to populate the mentor action plan.
+      </div>
+
+      <!-- Dynamic Strategy Cards Container -->
+      <div id="strategyList" class="strategy-list"></div>
+
+      <!-- Program Coaching & Accountability Framework Card -->
+      <div id="accountabilityCard" class="accountability-card">
+        <h3>Program Coaching &amp; Accountability Framework</h3>
+        <ul>
+          <li><strong>Meeting Cadence:</strong> Offer bi-weekly to quarterly check-ins based on resident interest and schedule to track question volume via the MKSAP Dashboard.</li>
+          <li><strong>Asynchronous Accountability Option:</strong> If preferred, set up periodic email/dashboard progress updates between meetings to maintain accountability.</li>
+          <li><strong>Peer &amp; Group Accountability Option:</strong> Encourage forming peer study groups to maintain progress.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Clickable References & Source Literature -->
+  <section class="references-section" aria-label="References and Literature">
+    <details class="references-details">
+      <summary>References &amp; Foundational Literature (Click to Expand)</summary>
+      <div class="references-content">
+        <div class="primary-citation">
+          <strong>Primary Source Framework:</strong><br />
+          Guerrasio J, Nogar C, Rustici M, Lay C, Corral J. Study skills and test taking strategies for coaching medical learners based on identified areas of struggle. <em>MedEdPORTAL</em>. 2017;13:10593.
+          <a href="https://doi.org/10.15766/mep_2374-8265.10593" target="_blank" rel="noopener noreferrer">https://doi.org/10.15766/mep_2374-8265.10593</a> |
+          <a href="https://pubmed.ncbi.nlm.nih.gov/30800795/" target="_blank" rel="noopener noreferrer">PMID: 30800795</a>
+        </div>
+        <ol class="references-list">
+          <li>
+            Guerrasio J, Garrity MJ, Aagaard EM. Learner deficits and academic outcomes of medical students, residents, fellows, and attending physicians referred to a remediation program, 2006–2012. <em>Acad Med</em>. 2014;89(2):352-358.
+            <a href="https://doi.org/10.1097/ACM.0000000000000122" target="_blank" rel="noopener noreferrer">doi:10.1097/ACM.0000000000000122</a>
+          </li>
+          <li>
+            Hamdy H, Prasad K, Anderson MB, et al. BEME systematic review: predictive values of measurements obtained in medical schools and future performance in medical practice. <em>Med Teach</em>. 2006;28(2):103-116.
+            <a href="https://doi.org/10.1080/01421590600622723" target="_blank" rel="noopener noreferrer">doi:10.1080/01421590600622723</a>
+          </li>
+          <li>
+            Kalet A, Chou CL, eds. <em>Remediation in Medical Education: A Mid-Course Correction</em>. New York, NY: Springer; 2014.
+            <a href="https://doi.org/10.1007/978-1-4614-9025-8" target="_blank" rel="noopener noreferrer">doi:10.1007/978-1-4614-9025-8</a>
+          </li>
+          <li>
+            Merriam SB, Caffarella RS, Baumgartner LM. <em>Learning in Adulthood: A Comprehensive Guide</em>. San Francisco, CA: Jossey-Bass; 2007.
+          </li>
+          <li>
+            Cleland J, Arnold R, Chesser A. Failing finals is often a surprise for the student but not the teacher: identifying difficulties and supporting students with academic difficulties. <em>Med Teach</em>. 2005;27(6):504-508.
+            <a href="https://doi.org/10.1080/01421590500156269" target="_blank" rel="noopener noreferrer">doi:10.1080/01421590500156269</a>
+          </li>
+          <li>
+            Mattick K, Knight L. High-quality learning: harder to achieve than we think? <em>Med Educ</em>. 2007;41(7):638-644.
+            <a href="https://doi.org/10.1111/j.1365-2923.2007.02783.x" target="_blank" rel="noopener noreferrer">doi:10.1111/j.1365-2923.2007.02783.x</a>
+          </li>
+          <li>
+            Hembree R. Correlates, causes, effects, and treatment of test anxiety. <em>Rev Educ Res</em>. 1988;58(1):47-77.
+            <a href="https://doi.org/10.3102/00346543058001047" target="_blank" rel="noopener noreferrer">doi:10.3102/00346543058001047</a>
+          </li>
+          <li>
+            Laatsch L. Evaluation and treatment of students with difficulties passing the Step examinations. <em>Acad Med</em>. 2009;84(5):677-683.
+            <a href="https://doi.org/10.1097/ACM.0b013e31819faae1" target="_blank" rel="noopener noreferrer">doi:10.1097/ACM.0b013e31819faae1</a>
+          </li>
+          <li>
+            Coumarbatch J, Robinson L, Thomas R, Bridge PD. Strategies for identifying students at risk for USMLE Step 1 failure. <em>Fam Med</em>. 2010;42(2):105-110.
+            <a href="https://pubmed.ncbi.nlm.nih.gov/20135567/" target="_blank" rel="noopener noreferrer">PMID: 20135567</a>
+          </li>
+          <li>
+            Karpicke JD. Retrieval-based learning: active retrieval promotes meaningful learning. <em>Curr Dir Psychol Sci</em>. 2012;21(3):157-163.
+            <a href="https://doi.org/10.1177/0963721412443552" target="_blank" rel="noopener noreferrer">doi:10.1177/0963721412443552</a>
+          </li>
+          <li>
+            Seibel H, Guyer K, Mangum AB, et al. <em>Barron's How to Prepare for the MCAT Medical College Admission Test</em>. 10th ed. Hauppauge, NY: Barron's Educational Series; 2006.
+          </li>
+          <li>
+            Rothstein R, ed. <em>Kaplan MCAT Comprehensive Review</em>. 7th ed. New York, NY: Kaplan; 2003.
+          </li>
+        </ol>
+      </div>
+    </details>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    Please direct any feedback or suggestions regarding this tool to Andrew Hwang.
+  </footer>
+
+  <!-- Application Script -->
+  <script>
+    const mappings = {
+      chk1: {
+        title: "Study Schedule Creation",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Passive planning or overestimating daily capacity.",
+        strategy: "Build a backward-planned schedule from test date to present. Break total question bank volume into fixed daily targets.",
+        smartGoal: "Complete 15 MKSAP questions daily from Mon–Fri, mapping blocks backwards from the exam date."
+      },
+      chk2: {
+        title: "Schedule Adherence & Flexibility",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Rigid scheduling leading to panic when shifts overflow.",
+        strategy: "Implement 5+2 modular scheduling: Schedule study blocks 5 days/week; reserve 2 days for catch-up or rest.",
+        smartGoal: "Maintain a 5-day study schedule each week and keep Sat/Sun reserved strictly as buffer days for catch-up."
+      },
+      chk3: {
+        title: "Resource Consolidation",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Resource overload ('FOMO' reading across too many texts).",
+        strategy: "Limit primary study materials to 2 core resources: 1 Question Bank (e.g., MKSAP) and 1 Reference (e.g., MKSAP Board Basics).",
+        smartGoal: "Utilize only MKSAP Q-Bank and MKSAP Board Basics as primary study resources for the next 6 months."
+      },
+      chk4: {
+        title: "Question Volume Calibration",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Underestimating required active practice prior to exam.",
+        strategy: "Target minimum question volume threshold (e.g., >50-70% of question bank completed prior to exam).",
+        smartGoal: "Complete at least 60% of the assigned rotation MKSAP question bank prior to the block end date."
+      },
+      chk5: {
+        title: "Active Learning Post-Question Review",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Passive explanation reading without retention synthesis.",
+        strategy: "Use a 'Mistake Journal' or flashcard log. For every wrong question, write down the single key fact or clinical rule missed.",
+        smartGoal: "Maintain a digital Mistake Journal log and review top 5 missed concepts during monthly/quarterly check-ins."
+      },
+      chk6: {
+        title: "Review Course Evaluation",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Seeking passive review courses instead of active question-based learning.",
+        strategy: "Assess if review course provides structured accountability or redundant passive lectures; prioritize question banks.",
+        smartGoal: "Focus 80% of study time on active MKSAP Q-bank practice before committing to a formal lecture-based review course."
+      },
+      chk7: {
+        title: "Testing Environment Simulation",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Studying in high-distraction or comfortable environments incompatible with testing conditions.",
+        strategy: "Simulate test conditions: Study in quiet library or coffee house corners with ambient noise; avoid studying in bed.",
+        smartGoal: "Complete all practice question blocks in a quiet library setting without phone or tabs open."
+      },
+      chk8: {
+        title: "Fatigue & Work-Life Balance Integration",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Cognitive overload from clinical duties competing with study capacity.",
+        strategy: "Utilize micro-studying (5-10 minute reviews on rotations) rather than 3-hour post-call marathons.",
+        smartGoal: "Perform 5-minute MKSAP Q-bank concept reviews twice daily on rotations and protect post-call days for rest."
+      },
+      chk9: {
+        title: "Time-Scarcity Adaptation",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Inability to find multi-hour study blocks during heavy rotations.",
+        strategy: "Break studying into micro-blocks (10-question sprints during downtime or rotation transitions).",
+        smartGoal: "Complete 10-question MKSAP Q-bank sprints during shift transitions or rotation downtime."
+      },
+      chk10: {
+        title: "Focus & Distraction Management",
+        priorityTag: "Study Habits",
+        priorityClass: "priority-habits",
+        diagnosis: "Frequent context switching and digital distractions.",
+        strategy: "Pomodoro Technique (25 minutes timed study, 5 minutes break). Turn off phone notifications during study blocks.",
+        smartGoal: "Execute 2 Pomodoro blocks (25 mins on, 5 mins off) daily with phone notifications disabled."
+      },
+      chk11: {
+        title: "Prior Failed Exam Fixation",
+        priorityTag: "Mindset",
+        priorityClass: "priority-mindset",
+        diagnosis: "Anxiety and distraction caused by focus on past exam failure.",
+        strategy: "Separate past exam results from current preparation; establish concrete forward-looking goals.",
+        smartGoal: "Focus tracking exclusively on current MKSAP Dashboard accuracy metrics rather than past exam scores."
+      },
+      chk12: {
+        title: "Active Retrieval & Memory Retention",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Passive reading leading to rapid memory decay.",
+        strategy: "Shift ratio to 70% practice questions / 30% reading. Use active recall (teach-back method or flashcards).",
+        smartGoal: "Maintain a 70/30 question-to-reading study ratio and teach back 2 missed concepts per week to co-interns/peers."
+      },
+      chk13: {
+        title: "Content Volume Deconstruction",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Feeling overwhelmed by the vast volume of board material.",
+        strategy: "Chunk material by organ system or subspecialty; focus on high-yield topics first rather than reading cover-to-cover.",
+        smartGoal: "Study board material in 2-week subspecialty chunks, focusing on lowest-scoring MKSAP histogram topics first."
+      },
+      chk14: {
+        title: "Auditory Learning Integration",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Lower retention from reading text alone; prefers auditory input.",
+        strategy: "Incorporate high-yield medical board podcasts, audio lectures, or group discussions during commutes or downtime.",
+        smartGoal: "Listen to 20 minutes of board review podcast episodes during daily commutes as an adjunct to MKSAP Q-bank."
+      },
+      chk15: {
+        title: "Kinesthetic & Experiential Learning",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Learns best by doing or hands-on clinical tasks rather than passive reading.",
+        strategy: "Use question-bank clinical vignettes, patient-case simulations, and teach-back methods; link study topics to current floor patients.",
+        smartGoal: "Look up and present a 1-minute clinical teaching point daily based on an active floor patient."
+      },
+      chk16: {
+        title: "Stem Analysis & Cover-the-Answer Method",
+        priorityTag: "Test Mechanics",
+        priorityClass: "priority-mechanics",
+        diagnosis: "Second-guessing and falling for distractor options.",
+        strategy: "Read question stem and formulate answer BEFORE looking at options. Identify why distractors are incorrect before picking.",
+        smartGoal: "Apply the Cover-the-Answer technique on all MKSAP practice blocks to commit to an answer before reviewing choices."
+      },
+      chk17: {
+        title: "Pacing & Time Management",
+        priorityTag: "Test Mechanics",
+        priorityClass: "priority-mechanics",
+        diagnosis: "Spending >90 seconds on difficult questions early in blocks.",
+        strategy: "Enforce 1-minute pace rule: If stuck, make best educated guess, flag, and move on. Never leave questions unanswered.",
+        smartGoal: "Adhere to the 1-minute pace rule during timed MKSAP question blocks: guess, flag, and advance if unresolved at 60s."
+      },
+      chk18: {
+        title: "Testing Stamina Building",
+        priorityTag: "Test Mechanics",
+        priorityClass: "priority-mechanics",
+        diagnosis: "Cognitive exhaustion during 4+ hour exam sit-downs.",
+        strategy: "Progressive block building: Increase practice sets from 1 block (40 q) up to 2 back-to-back blocks in final month.",
+        smartGoal: "Complete 2 back-to-back 40-question timed practice blocks 4 weeks prior to test date."
+      },
+      chk19: {
+        title: "Cognitive Reframing & Pre-Test Routine",
+        priorityTag: "Mindset",
+        priorityClass: "priority-mindset",
+        diagnosis: "High test anxiety and negative cognitive loops.",
+        strategy: "Develop a standardized pre-test routine (sleep hygiene, warm-up questions on test day morning, positive reframing).",
+        smartGoal: "Establish a standardized pre-test routine including 8 hours sleep and 5 warm-up practice questions morning of test."
+      },
+      chk20: {
+        title: "Test-Taker Identity Reframing",
+        priorityTag: "Mindset",
+        priorityClass: "priority-mindset",
+        diagnosis: "Self-fulfilling prophecy of being a 'bad test taker'.",
+        strategy: "Build confidence through objective metrics (question-bank percentiles) and systematic test-taking techniques.",
+        smartGoal: "Track MKSAP Dashboard accuracy improvements bi-weekly to build objective confidence ahead of exam date."
+      },
+      chk21: {
+        title: "Course vs. Standardized Exam Shift",
+        priorityTag: "Mindset",
+        priorityClass: "priority-mindset",
+        diagnosis: "Relying on recognition memory suitable for medical school exams rather than synthesis for standardized tests.",
+        strategy: "Shift from memorizing facts/slides to analyzing multi-step clinical vignettes and application-based questions.",
+        smartGoal: "Practice multi-step clinical vignette synthesis using standardized MKSAP questions rather than slide review."
+      },
+      chk22: {
+        title: "Event-Triggered Academic Shift",
+        priorityTag: "Mindset",
+        priorityClass: "priority-mindset",
+        diagnosis: "Academic drop triggered by a specific life event, stressor, or transition.",
+        strategy: "Explore root cause of performance shift; evaluate if personal support, counseling, or remediation coaching is needed.",
+        smartGoal: "Meet with mentor to address life event impact and connect with institutional wellness/support resources."
+      },
+      chk23: {
+        title: "Global Knowledge Remediation",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Widespread medical knowledge gaps across multiple organ systems.",
+        strategy: "Systematic core content review paired with foundational question banks (e.g., MKSAP Boards Basics overview).",
+        smartGoal: "Perform systematic core review using MKSAP Board Basics paired with monthly/quarterly faculty coaching sessions."
+      },
+      chk24: {
+        title: "Targeted High-Yield Subspecialty Focus",
+        priorityTag: "Core Knowledge",
+        priorityClass: "priority-knowledge",
+        diagnosis: "Isolated topic weaknesses (e.g., Endocrinology vs. Nephrology).",
+        strategy: "Isolate weak categories from score histogram; complete topic-specific question blocks before general reviews.",
+        smartGoal: "Allocate 60% of study time specifically to lowest-scoring MKSAP Dashboard subspecialty categories."
+      }
+    };
+
+    // Preserve user-edited SMART goal text across checkbox changes
+    const customSmartGoals = {};
+
+    function getOrderedCheckedIds() {
+      return Object.keys(mappings).filter((id) => {
+        const el = document.getElementById(id);
+        return el && el.checked;
+      });
+    }
+
+    function autoResizeTextarea(textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+
+    function handleSmartGoalInput(id, value, textareaElement) {
+      customSmartGoals[id] = value;
+      if (textareaElement) {
+        autoResizeTextarea(textareaElement);
+      }
+    }
+
+    function handleCheckChange(checkbox) {
+      const parentLabel = checkbox.closest(".checkbox-item");
+      if (parentLabel) {
+        parentLabel.classList.toggle("checked", checkbox.checked);
+      }
+      renderOutput();
+    }
+
+    function renderOutput() {
+      const checkedIds = getOrderedCheckedIds();
+      const count = checkedIds.length;
+
+      // Update selection count badge
+      const badge = document.getElementById("selectionCountBadge");
+      badge.textContent = `${count} Selected`;
+
+      // Toggle empty state vs strategy list & accountability card
+      const emptyState = document.getElementById("emptyState");
+      const strategyList = document.getElementById("strategyList");
+      const accountabilityCard = document.getElementById("accountabilityCard");
+      const warningBanner = document.getElementById("warningBanner");
+
+      if (count === 0) {
+        emptyState.style.display = "block";
+        strategyList.innerHTML = "";
+        accountabilityCard.style.display = "none";
+        warningBanner.style.display = "none";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      accountabilityCard.style.display = "block";
+
+      // Focus Suggestion Warning Banner (> 3 items)
+      if (count > 3) {
+        warningBanner.style.display = "block";
+        warningBanner.innerHTML = `⚠️ <strong>Focus Suggestion:</strong> You have selected ${count} areas of struggle. Consider prioritizing the <strong>top 2–3 highest-yield items</strong> to keep the coaching plan manageable and actionable.`;
+      } else {
+        warningBanner.style.display = "none";
+      }
+
+      // Render strategy cards while preserving any in-progress textarea edits
+      strategyList.innerHTML = "";
+      checkedIds.forEach((id) => {
+        const item = mappings[id];
+        const currentSmartGoal =
+          customSmartGoals[id] !== undefined ? customSmartGoals[id] : item.smartGoal;
+
+        const card = document.createElement("div");
+        card.className = "strategy-card";
+
+        const header = document.createElement("div");
+        header.className = "card-header";
+
+        const titleEl = document.createElement("div");
+        titleEl.className = "card-title";
+        titleEl.textContent = item.title;
+
+        const tagEl = document.createElement("span");
+        tagEl.className = `priority-tag ${item.priorityClass}`;
+        tagEl.textContent = item.priorityTag;
+
+        header.appendChild(titleEl);
+        header.appendChild(tagEl);
+
+        const rootCauseEl = document.createElement("div");
+        rootCauseEl.className = "card-field";
+        rootCauseEl.innerHTML = `<strong>Root Cause:</strong> ${item.diagnosis}`;
+
+        const strategyEl = document.createElement("div");
+        strategyEl.className = "card-field";
+        strategyEl.innerHTML = `<strong>Guerrasio Strategy:</strong> ${item.strategy}`;
+
+        const smartWrapper = document.createElement("div");
+        smartWrapper.className = "smart-goal-wrapper";
+
+        const smartLabel = document.createElement("label");
+        smartLabel.className = "smart-goal-label";
+        smartLabel.setAttribute("for", `smart_${id}`);
+        smartLabel.textContent = "Actionable SMART Goal Template (Editable):";
+
+        const textarea = document.createElement("textarea");
+        textarea.id = `smart_${id}`;
+        textarea.className = "smart-textarea";
+        textarea.value = currentSmartGoal;
+        textarea.addEventListener("input", function () {
+          handleSmartGoalInput(id, this.value, this);
+        });
+
+        smartWrapper.appendChild(smartLabel);
+        smartWrapper.appendChild(textarea);
+
+        card.appendChild(header);
+        card.appendChild(rootCauseEl);
+        card.appendChild(strategyEl);
+        card.appendChild(smartWrapper);
+
+        strategyList.appendChild(card);
+
+        // Adjust textarea height after insertion into DOM
+        autoResizeTextarea(textarea);
+      });
+    }
+
+    function copyBrief() {
+      const checkedIds = getOrderedCheckedIds();
+      if (checkedIds.length === 0) {
+        alert("Please select at least one struggle from the checklist before copying the brief.");
+        return;
+      }
+
+      let output = "GUERRASIO LEARNER COACHING & ACTION BRIEF\n";
+      output += "========================================\n\n";
+
+      checkedIds.forEach((id, index) => {
+        const item = mappings[id];
+        const textarea = document.getElementById(`smart_${id}`);
+        const smartValue = textarea ? textarea.value.trim() : item.smartGoal;
+
+        output += `${index + 1}. ${item.title} [${item.priorityTag}]\n`;
+        output += `   - Root Cause: ${item.diagnosis}\n`;
+        output += `   - Strategy: ${item.strategy}\n`;
+        output += `   - SMART Goal Action: ${smartValue}\n\n`;
+      });
+
+      const copyBtn = document.getElementById("copyBtn");
+      const originalText = copyBtn.textContent;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(output).then(() => {
+          showCopySuccess(copyBtn, originalText);
+        }).catch(() => {
+          fallbackCopy(output, copyBtn, originalText);
+        });
+      } else {
+        fallbackCopy(output, copyBtn, originalText);
+      }
+    }
+
+    function fallbackCopy(text, btn, originalText) {
+      const tempTextarea = document.createElement("textarea");
+      tempTextarea.value = text;
+      tempTextarea.style.position = "fixed";
+      tempTextarea.style.left = "-9999px";
+      document.body.appendChild(tempTextarea);
+      tempTextarea.select();
+      try {
+        document.execCommand("copy");
+        showCopySuccess(btn, originalText);
+      } catch (err) {
+        alert("Unable to copy to clipboard. Please copy manually.");
+      }
+      document.body.removeChild(tempTextarea);
+    }
+
+    function showCopySuccess(btn, originalText) {
+      btn.textContent = "✓ Copied to Clipboard!";
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 2000);
+    }
+
+    function resetForm() {
+      // Uncheck all checkboxes and remove checked styling
+      Object.keys(mappings).forEach((id) => {
+        const checkbox = document.getElementById(id);
+        if (checkbox) {
+          checkbox.checked = false;
+          const parentLabel = checkbox.closest(".checkbox-item");
+          if (parentLabel) {
+            parentLabel.classList.remove("checked");
+          }
+        }
+        delete customSmartGoals[id];
+      });
+
+      renderOutput();
+    }
+  </script>
+</body>
+</html>
